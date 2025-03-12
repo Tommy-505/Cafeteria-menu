@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #800000;
+        }
+        .cafeteria-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cafeteria-item {
+            background: #800000;
+            color: white;
+            padding: 15px;
+            width: 80%;
+            margin: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .cafeteria-item:hover {
+            background: #600000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Cafeteria</h1>
+        <div class="cafeteria-list">
+            {% for cafeteria in cafeterias %}
+                <a class="cafeteria-item" href="{{ url_for('cafeteria_menu', cafeteria_name=cafeteria) }}">{{ cafeteria }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
