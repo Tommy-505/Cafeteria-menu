@@ -5,9 +5,9 @@
     <title>Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
+                body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f8f0e3;
             text-align: center;
         }
         .container {
@@ -16,24 +16,58 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         h1 {
-            color: #d32f2f;
+            color: #800000;
+        }
+        form {
+            margin: 20px 0;
+            text-align: left;
+            display: inline-block;
+        }
+        label, select, input, button {
+            display: block;
+            margin: 10px auto;
+            width: 100%;
+            max-width: 400px;
+        }
+        select, input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
         }
         button {
-            background-color: #d32f2f;
+            background-color: #800000;
             color: white;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #600000;
+        }
+        .menu-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .menu-item {
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Admin Panel</h1>
+        
+        <h2>Add New Menu Item</h2>
         <form action="{{ url_for('add_item') }}" method="POST">
             <label for="cafeteria_name">Cafeteria:</label>
             <select name="cafeteria_name" required>
@@ -43,24 +77,36 @@
             </select>
             <label for="item">Item Name:</label>
             <input type="text" name="item" required>
+            <label for="category">Category:</label>
+            <select name="category" required>
+                <option value="Beverage">Beverage</option>
+                <option value="Curry">Curry</option>
+                <option value="Bread Items">Bread Items</option>
+                <option value="Specials">Specials</option>
+            </select>
+            <label for="price">Price (₹):</label>
+            <input type="number" step="0.01" name="price" required>
             <label for="available">Available:</label>
             <input type="checkbox" name="available">
             <label for="dietary">Dietary Information:</label>
             <input type="text" name="dietary">
             <button type="submit">Add Item</button>
         </form>
+
         <h2>Menu Items</h2>
         {% for cafeteria, items in cafeteria_menus.items() %}
             <h3>{{ cafeteria }}</h3>
-            <ul>
+            <div class="menu-list">
                 {% for item in items %}
-                    <li>
-                        {{ item[2] }} - {% if item[3] %} Available {% else %} Not Available {% endif %} - {{ item[4] }}
-                        <a href="{{ url_for('toggle_availability', item_id=item[0]) }}">Toggle</a>
-                        <a href="{{ url_for('delete_item', item_id=item[0]) }}">Delete</a>
-                    </li>
+                    <div class="menu-item">
+                        <span><strong>{{ item[1] }}</strong> - {{ item[2] }} - ₹{{ item[3] | float | round(2) }} - {% if item[4] %} Available {% else %} Not Available {% endif %} - {{ item[5] }}</span>
+                        <div class="actions" style="display: flex; gap: 15px; justify-content: flex-end;">
+                            <a href="{{ url_for('toggle_availability', item_id=item[0]) }}" class="btn">Toggle</a>
+                            <a href="{{ url_for('delete_item', item_id=item[0]) }}" class="btn btn-delete">Delete</a>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% endfor %}
         <a href="{{ url_for('home') }}">Back to Home</a>
     </div>

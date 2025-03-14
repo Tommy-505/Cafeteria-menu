@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ cafeteria_name }} Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://www.rajagiritech.ac.in/images/aboutus/campus.jpg') no-repeat center center fixed;
+            background-color: #f8f0e3;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #800000;
+        }
+        .dropdown {
+            margin: 10px 0;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .menu-category {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .menu-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .menu-item {
+            background: #ffe6e6;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .price {
+            font-weight: bold;
+            color: #800000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ cafeteria_name }} Menu</h1>
+        <div class="dropdown">
+            <label for="category">Select Category:</label>
+            <select id="category" onchange="filterMenu()">
+                <option value="all">All</option>
+                <option value="Beverage">Beverage</option>
+                <option value="Curry">Curry</option>
+                <option value="Bread Items">Bread Items</option>
+                <option value="Specials">Specials</option>
+            </select>
+        </div>
+        
+        {% for category, items in categorized_menu.items() %}
+            <div class="menu-category" id="{{ category }}">
+                <h2>{{ category }}</h2>
+                <ul class="menu-list">
+                    {% for item in items %}
+                        <li class="menu-item">
+                            <span>{{ item[0] }} - {% if item[2] %} Available {% else %} Not Available {% endif %} - {{ item[3] }}</span>
+                            <span class="price">₹{{ item[1] | float | round(2) }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        function filterMenu() {
+            var category = document.getElementById("category").value;
+            var sections = document.getElementsByClassName("menu-category");
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].style.display = "none";
+            }
+            if (category === "all") {
+                for (var i = 0; i < sections.length; i++) {
+                    sections[i].style.display = "block";
+                }
+            } else {
+                document.getElementById(category).style.display = "block";
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            filterMenu();
+        });
+    </script>
+</body>
+</html>
